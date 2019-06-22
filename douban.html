@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .main{
+            margin: 10px;
+            width: 750px;
+            height: 450px;
+            background: #faf9fd;
+            float: left;
+        }
+    </style>
+    <script src="echarts.min.js"></script>
+    <script src="data.js"></script>
+</head>
+<body>
+<div class="main"></div>
+<script>
+    let main=document.querySelector('.main');
+    console.log(main);
+    let char=echarts.init(main);
+    let selected={};
+    let series=[];
+    categories.forEach(categorie=>{
+        let movies = data.filter(ele=>ele[4].includes(categorie));
+        if (categorie=='全部'){
+            selected[categorie] = true;
+        }
+        else {
+            selected[categorie] = false;
+        }
+        let obj = {
+            name:categorie,
+            data:categorie == '全部'?data:movies,
+            type:'scatter',
+            label: {
+                emphasis: {
+                    show: true,
+                    formatter: function (param) {
+                        console.log(param);
+                        return param.data[3];
+                    },
+                    position: 'top'
+                }
+            },
+            itemStyle: {
+                normal: {
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(120, 36, 50, 0.5)',
+                    shadowOffsetY: 5,
+                    color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                        offset: 0,
+                        color: 'rgb(251, 118, 123)'
+                    }, {
+                        offset: 1,
+                        color: 'rgb(204, 46, 72)'
+                    }])
+                }
+            }
+        };
+        series.push(obj)
+    });
+    let option = {
+        backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
+            offset: 0,
+            color: '#f7f8fa'
+        }, {
+            offset: 1,
+            color: '#f1f4f9'
+        }]),
+        title: {
+            text: '豆瓣电影top250'
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 10,
+            top: 20,
+            bottom: 20,
+            data: categories,
+            selected,
+            selectedMode:'single',
+        },
+        xAxis: {
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            scale:true
+        },
+        yAxis: {
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            scale: true
+        },
+        series
+    };
+    char.setOption(option);
+</script>
+</body>
+</html>

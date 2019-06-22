@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .main{
+            margin: 10px;
+            width: 400px;
+            height: 400px;
+            background: #d8b863;
+            float: left;
+        }
+    </style>
+    <script src="echarts.min.js"></script>
+    <script src="data.js"></script>
+</head>
+<body>
+<div class="main"></div>
+<div class="main"></div>
+<script>
+    let main=document.querySelectorAll('.main')[0];
+    let main2=document.querySelectorAll('.main')[1];
+    let char=echarts.init(main);
+    let char2=echarts.init(main2);
+    let option={
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        series: [
+            {
+                name:'访问来源',
+                type:'pie',
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:[]
+            }
+        ]
+    };
+    let option2={
+        tooltip: {},
+        legend: {
+            data:['影评']
+        },
+        xAxis: {
+            data: [],
+        },
+        yAxis: {},
+        series: [{
+            name: '影评',
+            type: 'bar',
+            data: []
+        }]
+    };
+    let arr=[];
+    let arr2=[];
+    let arr3=[];
+    for (let i=0;i<categories.length;i++){
+        let name=categories[i];
+        let value=data.filter(ele=>ele[4].includes(name)).length;
+        arr.push({value,name});
+        arr2.push(name);
+        arr3.push(value)
+    }
+    console.log(arr2);
+    console.log(arr3);
+    option.series[0].data=arr;
+    option2.xAxis.data=arr2;
+    option2.series[0].data=arr3;
+    console.log(data);
+    char.setOption(option);
+    char2.setOption(option2);
+</script>
+</body>
+</html>
